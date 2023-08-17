@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Encurtador de URLs</title>
+</head>
+<body>
+<h1>Encurtador de URLs</h1>
+<input type="text" id="urlInput" placeholder="Insira a URL">
+<button id="shortenButton">Encurtar</button>
+<p id="shortenedUrl"></p>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const apiUrl = 'https://encurta.net/api';
+  const apiKey = 'd7154734c462b98ad7c97bc3d9c119d3e80beff6'; // Sua chave de API
+
+  const urlInput = document.getElementById("urlInput");
+  const shortenButton = document.getElementById("shortenButton");
+  const shortenedUrl = document.getElementById("shortenedUrl");
+
+  shortenButton.addEventListener("click", function() {
+    const urlToShorten = urlInput.value;
+
+    if (urlToShorten.trim() === "") {
+      alert("Por favor, insira uma URL válida.");
+      return;
+    }
+
+    const requestUrl = `${apiUrl}?api=${apiKey}&url=${encodeURIComponent(urlToShorten)}`;
+
+    fetch(requestUrl)
+      .then(response => response.json())
+      .then(data => {
+        if (data.shortenedUrl) {
+          shortenedUrl.innerHTML = `URL encurtada: <a href="${data.shortenedUrl}" target="_blank">${data.shortenedUrl}</a>`;
+        } else {
+          shortenedUrl.innerHTML = `Erro ao encurtar a URL: ${data.message}`;
+        }
+      })
+      .catch(error => {
+        shortenedUrl.innerHTML = `Erro na solicitação: ${error}`;
+      });
+  });
+});
+</script>
+</body>
+</html>
