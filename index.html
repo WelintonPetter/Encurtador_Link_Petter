@@ -4,12 +4,61 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Encurtador de URLs</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+  }
+  .container {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 10px;
+  }
+  button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #0056b3;
+  }
+  #shortenedUrl {
+    margin-top: 20px;
+    font-size: 18px;
+  }
+</style>
 </head>
 <body>
-<h1>Encurtador de URLs</h1>
-<input type="text" id="urlInput" placeholder="Insira a URL">
-<button id="shortenButton">Encurtar</button>
-<p id="shortenedUrl"></p>
+<div class="container">
+  <h1>Encurtador de URLs</h1>
+  <input type="text" id="urlInput" placeholder="Insira a URL">
+  <button id="shortenButton">Encurtar</button>
+  <p id="shortenedUrl"></p>
+</div>
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
@@ -45,5 +94,14 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 });
 </script>
+
+<script type="text/javascript">
+  var app_url = 'https://encurta.net/';
+  var app_api_token = 'd7154734c462b98ad7c97bc3d9c119d3e80beff6';
+  var app_advert = 2;
+  var app_domains = ["encurtapetter.com"];
+</script>
+<script src='//encurta.net/js/full-page-script.js'></script>
+
 </body>
 </html>
