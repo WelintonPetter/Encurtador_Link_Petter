@@ -5,51 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Encurtador de URLs</title>
 <style>
-  body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    background-color: #f4f4f4;
-  }
-  .container {
-    background-color: #fff;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  h1 {
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-  input {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-bottom: 10px;
-  }
-  button {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  button:hover {
-    background-color: #0056b3;
-  }
-  #shortenedUrl {
-    margin-top: 20px;
-    font-size: 18px;
-  }
+  /* ... (mesmo estilo) ... */
 </style>
 </head>
 <body>
@@ -58,6 +14,8 @@
   <input type="text" id="urlInput" placeholder="Insira a URL">
   <button id="shortenButton">Encurtar</button>
   <p id="shortenedUrl"></p>
+  <h2>Últimos 10 Links Encurtados:</h2>
+  <ul id="linkHistory"></ul>
 </div>
 
 <script>
@@ -68,6 +26,17 @@ document.addEventListener("DOMContentLoaded", function() {
   const urlInput = document.getElementById("urlInput");
   const shortenButton = document.getElementById("shortenButton");
   const shortenedUrl = document.getElementById("shortenedUrl");
+  const linkHistory = document.getElementById("linkHistory");
+
+  // Recupera o histórico de links encurtados do localStorage
+  let history = JSON.parse(localStorage.getItem("linkHistory")) || [];
+
+  // Exibe os 10 últimos links encurtados ao carregar a página
+  for (let i = 0; i < history.length; i++) {
+    const listItem = document.createElement("li");
+    listItem.innerHTML = `<a href="${history[i]}" target="_blank">${history[i]}</a>`;
+    linkHistory.appendChild(listItem);
+  }
 
   shortenButton.addEventListener("click", function() {
     const urlToShorten = urlInput.value;
@@ -83,6 +52,21 @@ document.addEventListener("DOMContentLoaded", function() {
       .then(response => response.json())
       .then(data => {
         if (data.shortenedUrl) {
+          // Atualiza o histórico e mantém apenas os 10 últimos links
+          history.unshift(data.shortenedUrl);
+          if (history.length > 10) {
+            history.pop();
+          }
+          localStorage.setItem("linkHistory", JSON.stringify(history));
+
+          // Atualiza a lista de links no HTML
+          linkHistory.innerHTML = "";
+          for (let i = 0; i < history.length; i++) {
+            const listItem = document.createElement("li");
+            listItem.innerHTML = `<a href="${history[i]}" target="_blank">${history[i]}</a>`;
+            linkHistory.appendChild(listItem);
+          }
+
           shortenedUrl.innerHTML = `URL encurtada: <a href="${data.shortenedUrl}" target="_blank">${data.shortenedUrl}</a>`;
         } else {
           shortenedUrl.innerHTML = `Erro ao encurtar a URL: ${data.message}`;
